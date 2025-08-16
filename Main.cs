@@ -21,6 +21,13 @@ public partial class Main : Node
         // 连接HUD的StartGame信号到Main的NewGame方法
         hud.StartGame += NewGame;
         GD.Print("Main._Ready: 已连接HUD.StartGame信号到Main.NewGame方法");
+        
+        // 加载Mob场景
+        if (MobScene == null)
+        {
+            MobScene = GD.Load<PackedScene>("res://mob.tscn");
+            GD.Print("Main._Ready: 已加载Mob场景");
+        }
     }
 
     public void GameOver()
