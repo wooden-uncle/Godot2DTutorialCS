@@ -226,8 +226,112 @@ GD.Print("Debug: ", variableToDebug);
    - 避免在项目路径中使用空格或特殊字符
    - 确保路径不太长（Windows路径长度限制）
 
+### 6. 代码修改后游戏无响应
+
+**症状**：
+- 修改C#代码后，游戏行为没有变化
+- 点击按钮或触发事件没有响应
+- 控制台没有显示预期的日志输出
+
+**可能原因**：
+- 修改C#代码后未重新构建项目
+- 场景中的属性未正确设置或为空
+- 信号连接丢失或未正确设置
+
+**解决方案**：
+
+1. **修改代码后重新构建项目**：
+   - 在Godot C#项目中，修改代码后必须先构建项目，然后再运行游戏
+   - 使用以下命令手动构建项目：
+   ```
+   dotnet build
+   ```
+   - 或者在Godot编辑器中使用构建选项
+
+2. **检查场景属性**：
+   - 确保所有导出的属性（使用`[Export]`标记的字段）在场景编辑器中已正确设置
+   - 对于未在编辑器中设置的属性，可以在代码中添加动态加载逻辑：
+   ```csharp
+   // 示例：动态加载MobScene
+   if (MobScene == null)
+   {
+       MobScene = GD.Load<PackedScene>("res://mob.tscn");
+       GD.Print("已加载Mob场景");
+   }
+   ```
+
+3. **添加调试日志**：
+   - 在关键方法中添加`GD.Print()`语句，帮助跟踪代码执行流程
+   - 特别是在信号处理方法中添加日志，确认信号是否被触发
+   ```csharp
+   public void _on_start_button_pressed()
+   {
+       GD.Print("开始按钮被点击");
+       // 方法实现
+   }
+   ```
+
+4. **检查信号连接**：
+   - 确保所有必要的信号已正确连接
+   - 可以在`_Ready()`方法中手动连接信号：
+   ```csharp
+   public override void _Ready()
+   {
+       var hud = GetNode<HUD>("HUD");
+       hud.StartGame += NewGame;
+       GD.Print("已连接HUD.StartGame信号到Main.NewGame方法");
+   }
+   ```
+
+### 7. 空引用异常
+
+**症状**：
+- 控制台显示`System.NullReferenceException: Object reference not set to an instance of an object`错误
+- 游戏在特定操作时崩溃
+
+**可能原因**：
+- 尝试访问未初始化的对象
+- 场景中的导出属性未设置
+- 节点路径错误
+
+**解决方案**：
+
+1. **添加空值检查**：
+   - 在访问可能为空的对象前添加空值检查
+   ```csharp
+   if (someObject != null)
+   {
+       someObject.DoSomething();
+   }
+   ```
+
+2. **动态加载资源**：
+   - 对于场景中未设置的导出属性，添加动态加载逻辑
+   - 例如，对于`MobScene`属性：
+   ```csharp
+   [Export] public PackedScene MobScene { get; set; }
+   
+   public override void _Ready()
+   {
+       // 如果MobScene未在编辑器中设置，则动态加载
+       if (MobScene == null)
+       {
+           MobScene = GD.Load<PackedScene>("res://mob.tscn");
+           GD.Print("已加载Mob场景");
+       }
+   }
+   ```
+
+3. **检查节点路径**：
+   - 确保使用`GetNode()`获取节点时路径正确
+   - 考虑使用`TryGetNode()`或添加路径存在性检查
+
 ## 结论
 
-大多数Godot C#项目中的问题都与命名空间、程序集名称、资源路径或环境配置有关。通过仔细检查这些方面，可以解决大部分常见问题。如果问题仍然存在，可以尝试创建一个最小可复现的示例，并在Godot论坛或GitHub上寻求帮助。
+大多数Godot C#项目中的问题都与命名空间、程序集名称、资源路径或环境配置有关。通过仔细检查这些方面，可以解决大部分常见问题。特别注意，在修改C#代码后必须重新构建项目，这是与GDScript项目的主要区别之一。
+
+对于空引用异常，添加适当的空值检查和动态资源加载逻辑可以大大提高代码的健壮性。
+
+如果问题仍然存在，可以尝试创建一个最小可复现的示例，并在Godot论坛或GitHub上寻求帮助。
 
 请参考[环境信息文档](./environment_info.md)获取本项目的具体环境配置信息，这对于故障排除非常有帮助。

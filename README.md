@@ -85,6 +85,32 @@
 2. 处理信号（事件）连接
 3. 实现异步操作
 4. 配置正确的项目结构和命名空间
+5. 处理C#特有的编译和构建流程
+
+### 重要注意事项
+
+1. **修改C#代码后需要重新构建**：与GDScript不同，修改C#代码后必须先构建项目再运行，否则更改不会生效。可以使用以下命令构建项目：
+   ```
+   dotnet build
+   ```
+
+2. **场景属性初始化**：对于在场景编辑器中未设置的导出属性（如`MobScene`），建议在代码中添加动态加载逻辑，避免空引用异常：
+   ```csharp
+   // 示例：动态加载MobScene
+   if (MobScene == null)
+   {
+       MobScene = GD.Load<PackedScene>("res://mob.tscn");
+   }
+   ```
+
+3. **信号连接**：除了在场景编辑器中连接信号外，也可以在代码中手动连接，特别是当信号连接丢失时：
+   ```csharp
+   public override void _Ready()
+   {
+       var hud = GetNode<HUD>("HUD");
+       hud.StartGame += NewGame;
+   }
+   ```
 
 ## 贡献
 
