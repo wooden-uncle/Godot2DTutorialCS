@@ -1,6 +1,9 @@
 using Godot;
 using System;
 
+namespace DodgeTheCreepsCS
+{
+
 public partial class Player : Area2D
 {
     [Signal]
@@ -71,4 +74,5 @@ public partial class Player : Area2D
         // Must be deferred as we can't change physics properties on a physics callback.
         GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
     }
+}
 }

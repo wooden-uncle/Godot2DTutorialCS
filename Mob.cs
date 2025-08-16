@@ -1,6 +1,9 @@
 using Godot;
 using System;
 
+namespace DodgeTheCreepsCS
+{
+
 public partial class Mob : RigidBody2D
 {
     // Called when the node enters the scene tree for the first time.
@@ -15,4 +18,5 @@ public partial class Mob : RigidBody2D
     {
         QueueFree();
     }
+}
 }

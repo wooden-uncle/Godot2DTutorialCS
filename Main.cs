@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace DodgeTheCreepsCS
+{
 public partial class Main : Node
 {
     [Export]
@@ -12,14 +14,14 @@ public partial class Main : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        GetNode<HUD>("HUD").ShowVersion(_gameVersion);
+        GetNode<DodgeTheCreepsCS.HUD>("HUD").ShowVersion(_gameVersion);
     }
 
     public void GameOver()
     {
         GetNode<Timer>("MobTimer").Stop();
         GetNode<Timer>("ScoreTimer").Stop();
-        GetNode<HUD>("HUD").ShowGameOver();
+        GetNode<DodgeTheCreepsCS.HUD>("HUD").ShowGameOver();
         GetNode<AudioStreamPlayer>("Music").Stop();
         GetNode<AudioStreamPlayer>("DeathSound").Play();
     }
@@ -28,13 +30,13 @@ public partial class Main : Node
     {
         _score = 0;
 
-        var player = GetNode<Player>("Player");
+        var player = GetNode<DodgeTheCreepsCS.Player>("Player");
         var startPosition = GetNode<Marker2D>("StartPosition");
         player.Start(startPosition.Position);
 
         GetNode<Timer>("StartTimer").Start();
 
-        var hud = GetNode<HUD>("HUD");
+        var hud = GetNode<DodgeTheCreepsCS.HUD>("HUD");
         hud.UpdateScore(_score);
         hud.ShowMessage("Get Ready!");
 
@@ -44,7 +46,7 @@ public partial class Main : Node
     private void _on_mob_timer_timeout()
     {
         // Create a new instance of the Mob scene.
-        var mob = MobScene.Instantiate<Mob>();
+        var mob = MobScene.Instantiate<DodgeTheCreepsCS.Mob>();
 
         // Choose a random location on Path2D.
         var mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
@@ -71,7 +73,7 @@ public partial class Main : Node
     private void _on_score_timer_timeout()
     {
         _score++;
-        GetNode<HUD>("HUD").UpdateScore(_score);
+        GetNode<DodgeTheCreepsCS.HUD>("HUD").UpdateScore(_score);
     }
 
     private void _on_start_timer_timeout()
@@ -79,4 +81,5 @@ public partial class Main : Node
         GetNode<Timer>("MobTimer").Start();
         GetNode<Timer>("ScoreTimer").Start();
     }
+}
 }

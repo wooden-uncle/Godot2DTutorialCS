@@ -1,6 +1,9 @@
 using Godot;
 using System;
 
+namespace DodgeTheCreepsCS
+{
+
 public partial class HUD : CanvasLayer
 {
     [Signal]
@@ -55,4 +58,5 @@ public partial class HUD : CanvasLayer
     {
         GetNode<Label>("Message").Hide();
     }
+}
 }
