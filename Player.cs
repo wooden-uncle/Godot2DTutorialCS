@@ -64,7 +64,7 @@ public partial class Player : Area2D
     [Export(PropertyHint.Range, "1,10,1")]
     [ExportGroup("Gameplay Properties")]
     [ExportSubgroup("Health Settings")]
-    public int Health { get; set; } = 3;
+    public int Health { get; set; } = 1;
     
     /// <summary>
     /// 是否显示调试信息
