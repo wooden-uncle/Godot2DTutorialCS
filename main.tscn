@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://fxddg54o863j"]
+[gd_scene load_steps=7 format=3 uid="uid://fxddg54o863j"]
 
 [ext_resource type="Script" uid="uid://qrpt6a03mk71" path="res://Main.cs" id="1_e2708"]
 [ext_resource type="PackedScene" uid="uid://c7yrk2g4pmsxv" path="res://player.tscn" id="1_ttdfd"]
 [ext_resource type="PackedScene" uid="uid://cvwsxrfi3mv7" path="res://hud.tscn" id="4_7u5t8"]
+[ext_resource type="AudioStream" uid="uid://cnbvswlwbk0jv" path="res://art/House In a Forest Loop.ogg" id="5_ixqnm"]
 [ext_resource type="AudioStream" uid="uid://cytu1vodvgaju" path="res://art/gameover.wav" id="6_3s2ij"]
 
 [sub_resource type="Curve2D" id="Curve2D_kk8sk"]
@@ -44,6 +45,7 @@ curve = SubResource("Curve2D_kk8sk")
 [node name="HUD" parent="." instance=ExtResource("4_7u5t8")]
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ixqnm")
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_3s2ij")
