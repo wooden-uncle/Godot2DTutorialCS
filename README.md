@@ -1,6 +1,6 @@
 # Dodge the Creeps C#
 
-![游戏截图](docs/images/game_screenshot.svg)
+![游戏截图](docs/images/game_screenshot.png)
 
 ## 项目简介
 
@@ -49,12 +49,6 @@
 ├── art/                  # 游戏美术资源
 ├── fonts/                # 字体资源
 ├── docs/                 # 项目文档
-│   ├── project_overview.md      # 项目概述
-│   ├── csharp_conversion_guide.md # C#转换指南
-│   ├── class_structure.md       # 类结构文档
-│   ├── troubleshooting.md       # 故障排除指南
-│   ├── environment_info.md      # 环境配置信息
-│   └── images/                  # 文档图片
 ├── Player.cs             # 玩家角色脚本
 ├── Mob.cs                # 敌人脚本
 ├── Main.cs               # 主游戏场景脚本
@@ -64,11 +58,7 @@
 
 ## 文档
 
-- [项目概述](docs/project_overview.md) - 游戏的基本信息和技术实现
-- [C#转换指南](docs/csharp_conversion_guide.md) - 从GDScript到C#的转换经验
-- [类结构文档](docs/class_structure.md) - 详细的类结构和功能说明
-- [故障排除指南](docs/troubleshooting.md) - 常见问题和解决方案
-- [环境信息](docs/environment_info.md) - 开发环境配置信息
+详细文档请参考`docs`目录下的相关文件。
 
 ## 游戏控制
 
@@ -79,48 +69,15 @@
 
 本项目是将Godot官方的"Dodge the Creeps"教程从GDScript转换为C#的实现。主要目标是展示如何在保持相同游戏功能的前提下，使用C#替代GDScript进行Godot游戏开发。
 
-转换过程中的主要挑战包括：
-
-1. 适应C#的语法和命名约定
-2. 处理信号（事件）连接
-3. 实现异步操作
-4. 配置正确的项目结构和命名空间
-5. 处理C#特有的编译和构建流程
-
 ### 重要注意事项
 
-1. **修改C#代码后需要重新构建**：与GDScript不同，修改C#代码后必须先构建项目再运行，否则更改不会生效。可以使用以下命令构建项目：
-   ```
-   dotnet build
-   ```
+1. **修改C#代码后需要重新构建**：与GDScript不同，修改C#代码后必须先构建项目再运行，否则更改不会生效。
 
-2. **场景属性初始化**：对于在场景编辑器中未设置的导出属性（如`MobScene`），建议在代码中添加动态加载逻辑，避免空引用异常：
-   ```csharp
-   // 示例：动态加载MobScene
-   if (MobScene == null)
-   {
-       MobScene = GD.Load<PackedScene>("res://mob.tscn");
-   }
-   ```
+2. **场景属性初始化**：对于在场景编辑器中未设置的导出属性，建议在代码中添加动态加载逻辑，避免空引用异常。
 
-3. **信号连接**：除了在场景编辑器中连接信号外，也可以在代码中手动连接，特别是当信号连接丢失时：
-   ```csharp
-   public override void _Ready()
-   {
-       var hud = GetNode<HUD>("HUD");
-       hud.StartGame += NewGame;
-   }
-   ```
+3. **信号连接**：除了在场景编辑器中连接信号外，也可以在代码中手动连接，特别是当信号连接丢失时。
 
-## 贡献
 
-欢迎贡献代码、报告问题或提出改进建议。请遵循以下步骤：
-
-1. Fork本仓库
-2. 创建您的特性分支 (`git checkout -b feature/amazing-feature`)
-3. 提交您的更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 打开Pull Request
 
 ## 许可证
 
