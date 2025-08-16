@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://fxddg54o863j"]
+[gd_scene load_steps=6 format=3 uid="uid://fxddg54o863j"]
 
 [ext_resource type="Script" uid="uid://qrpt6a03mk71" path="res://Main.cs" id="1_e2708"]
 [ext_resource type="PackedScene" uid="uid://c7yrk2g4pmsxv" path="res://player.tscn" id="1_ttdfd"]
-[ext_resource type="PackedScene" uid="uid://bf0ajchjdhfqj" path="res://mob.tscn" id="2_x2l1u"]
 [ext_resource type="PackedScene" uid="uid://cvwsxrfi3mv7" path="res://hud.tscn" id="4_7u5t8"]
 [ext_resource type="AudioStream" uid="uid://cytu1vodvgaju" path="res://art/gameover.wav" id="6_3s2ij"]
 
@@ -14,7 +13,6 @@ point_count = 5
 
 [node name="Main" type="Node"]
 script = ExtResource("1_e2708")
-mob_scene = ExtResource("2_x2l1u")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -25,7 +23,6 @@ grow_vertical = 2
 color = Color(0.185105, 0.542355, 0.493205, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_ttdfd")]
-speed = 200
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
