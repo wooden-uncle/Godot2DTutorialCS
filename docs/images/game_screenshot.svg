@@ -1,0 +1,22 @@
+<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="800" height="450" fill="#2c3e50"/>
+  
+  <!-- 游戏标题 -->
+  <text x="400" y="80" font-family="Arial" font-size="40" fill="white" text-anchor="middle">Dodge the Creeps</text>
+  
+  <!-- 玩家角色 -->
+  <circle cx="400" cy="250" r="20" fill="#3498db"/>
+  
+  <!-- 敌人 -->
+  <rect x="200" y="150" width="30" height="30" fill="#e74c3c"/>
+  <rect x="600" y="200" width="30" height="30" fill="#e74c3c"/>
+  <rect x="300" y="350" width="30" height="30" fill="#e74c3c"/>
+  <rect x="500" y="100" width="30" height="30" fill="#e74c3c"/>
+  
+  <!-- 分数 -->
+  <text x="50" y="50" font-family="Arial" font-size="24" fill="white">Score: 42</text>
+  
+  <!-- 游戏说明 -->
+  <text x="400" y="400" font-family="Arial" font-size="18" fill="white" text-anchor="middle">使用方向键或WASD移动角色，躲避红色敌人</text>
+</svg>
