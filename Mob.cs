@@ -3,13 +3,12 @@ using System;
 
 namespace DodgeTheCreepsCS
 {
-
 /// <summary>
 /// 敌人类，负责敌人的行为和外观
 /// </summary>
 public partial class Mob : RigidBody2D
 {
-    // Called when the node enters the scene tree for the first time.
+    #region Lifecycle Methods
     /// <summary>
     /// 初始化敌人，随机选择敌人类型并播放相应动画
     /// </summary>
@@ -26,14 +25,17 @@ public partial class Mob : RigidBody2D
         
         animatedSprite.Play(selectedType);
     }
+    #endregion
 
+    #region Private Methods
     /// <summary>
     /// 当敌人离开屏幕时被调用，负责清理敌人实例
     /// </summary>
-    private void _on_visible_on_screen_notifier_2d_screen_exited()
+    private void OnVisibleOnScreenNotifier2DScreenExited()
     {
-        GD.Print("Mob._on_visible_on_screen_notifier_2d_screen_exited: 敌人离开屏幕，准备销毁");
+        GD.Print("Mob.OnVisibleOnScreenNotifier2DScreenExited: 敌人离开屏幕，准备销毁");
         QueueFree();
     }
+    #endregion
 }
 }
