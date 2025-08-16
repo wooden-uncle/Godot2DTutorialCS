@@ -82,7 +82,56 @@
 3. **检查命名空间**：
    - 确保信号发送者和接收者在同一命名空间中，或使用完全限定名称
 
-### 3. 资源加载问题
+### 3. 信号重复连接问题
+
+**症状**：
+- 控制台显示错误："ERROR: Signal 'timeout' is already connected to given callable 'Delegate::Invoke' in that object."
+- 游戏在某些情况下可能表现异常，如游戏结束后界面不正确显示
+
+**可能原因**：
+- 重复连接同一信号到同一方法
+- 未正确断开之前的信号连接
+- 在对象生命周期中多次调用连接代码
+
+**解决方案**：
+
+1. **使用临时变量存储事件处理程序**：
+   ```csharp
+   // 声明一个字段来存储事件处理程序
+   private System.Action _messageTimerHandler;
+   
+   public void SomeMethod()
+   {
+       // 移除之前可能存在的事件处理程序
+       var timer = GetNode<Timer>("Timer");
+       if (_messageTimerHandler != null)
+       {
+           timer.Timeout -= _messageTimerHandler;
+           _messageTimerHandler = null;
+       }
+       
+       // 创建新的事件处理程序并连接
+       _messageTimerHandler = () =>
+       {
+           // 处理逻辑
+           
+           // 完成后移除事件处理程序
+           timer.Timeout -= _messageTimerHandler;
+           _messageTimerHandler = null;
+       };
+       
+       timer.Timeout += _messageTimerHandler;
+   }
+   ```
+
+2. **使用ConnectOneShot方法（仅适用于GDScript）**：
+   - 注意：此方法在C#中不可用，C#需使用上述方法
+
+3. **检查连接逻辑**：
+   - 确保在对象初始化时只连接一次信号
+   - 在需要重复连接的场景中，先断开现有连接
+
+### 4. 资源加载问题
 
 **症状**：
 - 控制台显示错误："Cannot load resource..."

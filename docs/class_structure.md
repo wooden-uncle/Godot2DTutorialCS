@@ -293,24 +293,42 @@ public void ShowMessage(string text)
 显示游戏结束界面。
 
 ```csharp
+// 用于存储临时事件处理程序的字段，以便后续可以移除
+private System.Action _messageTimerHandler;
+
 public void ShowGameOver()
 {
     ShowMessage("Game Over");
 
-    // 等待MessageTimer倒计时结束
-    GetNode<Timer>("MessageTimer").Timeout += () =>
+    // 移除之前可能存在的事件处理程序
+    var messageTimer = GetNode<Timer>("MessageTimer");
+    if (_messageTimerHandler != null)
+    {
+        messageTimer.Timeout -= _messageTimerHandler;
+        _messageTimerHandler = null;
+    }
+    
+    // 创建新的事件处理程序并连接
+    _messageTimerHandler = () =>
     {
         var message = GetNode<Label>("Message");
         message.Text = "Dodge the\nCreeps!";
         message.Show();
 
-        // 创建一次性定时器并等待其结束
+        // 使用一次性计时器
         var oneShot = GetTree().CreateTimer(1.0);
         oneShot.Timeout += () =>
         {
             GetNode<Button>("StartButton").Show();
+            // 一次性计时器不需要断开连接，因为它会自动销毁
         };
+        
+        // 完成后移除事件处理程序
+        messageTimer.Timeout -= _messageTimerHandler;
+        _messageTimerHandler = null;
     };
+    
+    messageTimer.Timeout += _messageTimerHandler;
 }
 ```
 

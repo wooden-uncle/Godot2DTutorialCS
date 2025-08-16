@@ -4,8 +4,14 @@ using System;
 namespace DodgeTheCreepsCS
 {
 
+/// <summary>
+/// 玩家类，负责处理玩家输入、移动和碰撞
+/// </summary>
 public partial class Player : Area2D
 {
+    /// <summary>
+    /// 当玩家被敌人击中时发出的信号
+    /// </summary>
     [Signal]
     public delegate void HitEventHandler();
 
@@ -14,6 +20,10 @@ public partial class Player : Area2D
     
     private Vector2 _screenSize; // Size of the game window.
 
+    /// <summary>
+    /// 初始化玩家位置并显示玩家
+    /// </summary>
+    /// <param name="pos">玩家的初始位置</param>
     public void Start(Vector2 pos)
     {
         GD.Print("Player.Start: 初始化玩家位置");
@@ -24,12 +34,22 @@ public partial class Player : Area2D
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
     }
 
+    /// <summary>
+    /// 初始化玩家，获取屏幕大小并隐藏玩家
+    /// </summary>
     public override void _Ready()
     {
+        GD.Print("Player._Ready: 初始化玩家");
         _screenSize = GetViewportRect().Size;
+        GD.Print($"Player._Ready: 获取屏幕大小 {_screenSize}");
         Hide();
+        GD.Print("Player._Ready: 隐藏玩家，等待游戏开始");
     }
 
+    /// <summary>
+    /// 每帧处理玩家输入和移动
+    /// </summary>
+    /// <param name="delta">帧间隔时间</param>
     public override void _Process(double delta)
     {
         Vector2 velocity = Vector2.Zero; // The player's movement vector.
@@ -70,12 +90,22 @@ public partial class Player : Area2D
         }
     }
 
+    /// <summary>
+    /// 当玩家与敌人碰撞时调用
+    /// </summary>
+    /// <param name="body">碰撞的物体（敌人）</param>
     private void _on_body_entered(Node2D body)
     {
+        GD.Print("Player._on_body_entered: 玩家被敌人击中");
         Hide(); // Player disappears after being hit.
+        GD.Print("Player._on_body_entered: 隐藏玩家");
+        
         EmitSignal(SignalName.Hit);
+        GD.Print("Player._on_body_entered: 发出Hit信号");
+        
         // Must be deferred as we can't change physics properties on a physics callback.
         GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+        GD.Print("Player._on_body_entered: 禁用碰撞检测");
     }
 }
 }
