@@ -50,7 +50,10 @@ public partial class HUD : CanvasLayer
 
     private void _on_start_button_pressed()
     {
+        GD.Print("HUD._on_start_button_pressed: 开始按钮被点击");
         GetNode<Button>("StartButton").Hide();
+        GD.Print("HUD._on_start_button_pressed: 隐藏开始按钮");
+        GD.Print("HUD._on_start_button_pressed: 发出StartGame信号");
         EmitSignal(SignalName.StartGame);
     }
 

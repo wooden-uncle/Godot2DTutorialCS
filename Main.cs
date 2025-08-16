@@ -14,7 +14,13 @@ public partial class Main : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        GetNode<DodgeTheCreepsCS.HUD>("HUD").ShowVersion(_gameVersion);
+        GD.Print("Main._Ready: 初始化游戏");
+        var hud = GetNode<DodgeTheCreepsCS.HUD>("HUD");
+        hud.ShowVersion(_gameVersion);
+        
+        // 连接HUD的StartGame信号到Main的NewGame方法
+        hud.StartGame += NewGame;
+        GD.Print("Main._Ready: 已连接HUD.StartGame信号到Main.NewGame方法");
     }
 
     public void GameOver()
@@ -28,19 +34,24 @@ public partial class Main : Node
 
     public void NewGame()
     {
+        GD.Print("Main.NewGame: 开始新游戏");
         _score = 0;
 
         var player = GetNode<DodgeTheCreepsCS.Player>("Player");
         var startPosition = GetNode<Marker2D>("StartPosition");
+        GD.Print($"Main.NewGame: 设置玩家起始位置 {startPosition.Position}");
         player.Start(startPosition.Position);
 
+        GD.Print("Main.NewGame: 启动StartTimer");
         GetNode<Timer>("StartTimer").Start();
 
         var hud = GetNode<DodgeTheCreepsCS.HUD>("HUD");
         hud.UpdateScore(_score);
         hud.ShowMessage("Get Ready!");
+        GD.Print("Main.NewGame: 显示'Get Ready!'消息");
 
         GetNode<AudioStreamPlayer>("Music").Play();
+        GD.Print("Main.NewGame: 播放背景音乐");
     }
 
     private void _on_mob_timer_timeout()
@@ -78,8 +89,10 @@ public partial class Main : Node
 
     private void _on_start_timer_timeout()
     {
+        GD.Print("Main._on_start_timer_timeout: StartTimer超时");
         GetNode<Timer>("MobTimer").Start();
         GetNode<Timer>("ScoreTimer").Start();
+        GD.Print("Main._on_start_timer_timeout: 启动MobTimer和ScoreTimer");
     }
 }
 }

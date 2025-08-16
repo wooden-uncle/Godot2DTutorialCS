@@ -16,8 +16,11 @@ public partial class Player : Area2D
 
     public void Start(Vector2 pos)
     {
+        GD.Print("Player.Start: 初始化玩家位置");
         Position = pos;
+        GD.Print("Player.Start: 显示玩家");
         Show();
+        GD.Print("Player.Start: 启用碰撞检测");
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
     }
 
