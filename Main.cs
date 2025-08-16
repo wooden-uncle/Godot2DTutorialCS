@@ -22,6 +22,11 @@ public partial class Main : Node
         hud.StartGame += NewGame;
         GD.Print("Main._Ready: 已连接HUD.StartGame信号到Main.NewGame方法");
         
+        // 连接Player的Hit信号到Main的GameOver方法
+        var player = GetNode<DodgeTheCreepsCS.Player>("Player");
+        player.Hit += GameOver;
+        GD.Print("Main._Ready: 已连接Player.Hit信号到Main.GameOver方法");
+        
         // 加载Mob场景
         if (MobScene == null)
         {
@@ -56,6 +61,10 @@ public partial class Main : Node
         hud.UpdateScore(_score);
         hud.ShowMessage("Get Ready!");
         GD.Print("Main.NewGame: 显示'Get Ready!'消息");
+        
+        // 清理所有敌人
+        GetTree().CallGroup("mobs", "queue_free");
+        GD.Print("Main.NewGame: 清理所有敌人");
 
         GetNode<AudioStreamPlayer>("Music").Play();
         GD.Print("Main.NewGame: 播放背景音乐");
@@ -83,6 +92,9 @@ public partial class Main : Node
         // Choose the velocity for the mob.
         var velocity = new Vector2((float)GD.RandRange(150.0, 250.0), 0);
         mob.LinearVelocity = velocity.Rotated(direction);
+
+        // 确保敌人被添加到mobs组中
+        mob.AddToGroup("mobs");
 
         // Spawn the mob by adding it to the Main scene.
         AddChild(mob);
